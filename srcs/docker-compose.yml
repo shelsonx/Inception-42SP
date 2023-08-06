@@ -1,0 +1,71 @@
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    build:
+      context: requirements/mariadb
+    environment:
+      WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD} 
+      WP_DATABASE: ${WP_DATABASE}
+      WP_HOST: ${WP_HOST}
+    networks:
+      - inception
+    volumes:
+      - mariadb:/var/lib/mysql
+  
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    build:
+      context: requirements/wordpress
+    environment:
+      WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD} 
+      WP_DATABASE: ${WP_DATABASE} 
+      WP_TITLE: ${WP_TITLE}
+      WP_URL: ${WP_URL}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD} 
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_HOST: ${WP_HOST}
+
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - mariadb
+  
+  nginx:
+    container_name: nginx
+    image: nginx
+    build:
+      context: requirements/nginx
+    networks:
+     - inception
+    ports:
+      - 443:443
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - wordpress
+
+networks:
+  inception:
+    name: inception
+  
+volumes:
+  mariadb:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/sjhony-x/data/mariadb
+    name: mariadb
+  
+  wordpress:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/sjhony-x/data/wordpress
+    name: wordpress
