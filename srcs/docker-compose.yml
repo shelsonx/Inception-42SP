@@ -2,6 +2,7 @@ services:
   mariadb:
     container_name: mariadb
     image: mariadb
+    restart: on-failure
     build:
       context: requirements/mariadb
       args:
@@ -23,6 +24,7 @@ services:
   wordpress:
     container_name: wordpress
     image: wordpress
+    restart: on-failure
     build:
       context: requirements/wordpress
     environment:
@@ -49,6 +51,7 @@ services:
   nginx:
     container_name: nginx
     image: nginx
+    restart: on-failure
     build:
       context: requirements/nginx
     networks:
