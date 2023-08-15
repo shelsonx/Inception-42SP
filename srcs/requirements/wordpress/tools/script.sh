@@ -18,3 +18,4 @@ if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
         --skip-email --allow-root
 	wp user create $WP_USER $WP_EMAIL --user_pass=$WP_PASSWORD --role=subscriber --porcelain --allow-root
 fi
+php-fpm -F

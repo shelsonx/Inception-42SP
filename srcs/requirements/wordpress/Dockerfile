@@ -29,4 +29,4 @@ RUN mv wp-cli.phar /usr/local/bin/wp
 COPY tools/script.sh /tmp/script.sh
 RUN chmod 777 /tmp/script.sh
 
-CMD ["/bin/sh", "-c", "/tmp/script.sh && php-fpm -F"]
+CMD ["/bin/sh", "/tmp/script.sh"]
